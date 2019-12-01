@@ -1,0 +1,226 @@
+<html>
+  <head>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery-line.js"></script>
+    <script type="text/javascript" src="jquery-birthday-picker.js"></script>
+
+    <style type="text/css">
+
+      #matrix {
+        display: none;
+        width:700px;
+        height: 700px;
+        position: fixed;
+        background-color: white;
+        top: 50%;
+        left: 50%;
+        margin-top: -350px;
+        margin-left: -350px;
+      }
+
+      #date_of_birth {
+        display: block;
+        width:300px;
+        height: 100px;
+        position: fixed;
+        background-color: white;
+        top: 50%;
+        left: 50%;
+        margin-top: -150px;
+        margin-left: -50px;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      div.circle {
+        position: absolute;
+        border: 2px solid black;
+        background: white;
+        border-radius: 50%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        text-align: center;
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+      }
+
+    </style>
+
+    <script type="text/javascript">
+
+    function sum_digits(val) {
+        var sum = 0;
+        var str = val.toString();
+        for (var i = 0; i < str.length; i++) {
+            sum = sum + parseInt(str.charAt(i));
+        }
+        return sum;
+    }
+
+    function offset_21(val) {
+        var ret = val;
+        while (ret > 21) {
+            ret = sum_digits(ret);
+        }
+        return ret;
+    }
+
+    $(function() {
+        $("#datepicker").birthdayPicker({
+          "placeholder": true,
+          "defaultDate": new Date(1980, 6, 1),
+          "monthFormat":"long",
+          "sizeClass": "span3"
+        });
+
+        $("#button_ok").click(function(){
+
+            var size = 700;
+            var radius = size / 2;
+            var katet = radius / 1.414215;
+            var e_size = 60;
+            var e_radius = e_size / 2;
+            var m_size = 45;
+            var m_radius = m_size / 2;
+            var s_size = 27;
+            var s_radius = s_size / 2;
+
+            var dt = $(".birthDay").val();
+            var dt_val = dt.split("-");
+            var day = parseInt(dt_val[2]);
+            var month = parseInt(dt_val[1]);
+            var year = parseInt(dt_val[0]);
+
+            var e1x = 0;
+            var e1y = radius;
+            var e2x = radius;
+            var e2y = 0;
+            var e3x = size;
+            var e3y = radius;
+            var e4x = radius;
+            var e4y = size;
+            var e5x = radius - katet;
+            var e5y = radius + katet;
+            var e6x = radius - katet;
+            var e6y = radius - katet;
+            var e7x = radius + katet;
+            var e7y = radius - katet;
+            var e8x = radius + katet;
+            var e8y = radius + katet;
+            var e9x = radius;
+            var e9y = radius;
+            var e10x = radius + katet;
+            var e10y = radius;
+            var e11x = radius;
+            var e11y = radius + katet;
+            var e12x = radius + katet / 2;
+            var e12y = radius + katet / 2;
+            var e13x = radius + katet / 4;
+            var e13y = radius + katet - katet / 4;
+            var e14x = radius + katet - katet / 4;
+            var e14y = radius + katet / 4;
+            var e15x = radius;
+            var e15y = radius + katet + (radius - katet) / 2;
+
+            var e1 = offset_21(day);
+            var e2 = month;
+            var e3 = offset_21(year);
+            var e4 = offset_21(e1 + e2 + e3);
+            var e5 = offset_21(e1 + e4);
+            var e6 = offset_21(e1 + e2);
+            var e7 = offset_21(e2 + e3);
+            var e8 = offset_21(e3 + e4);
+            var e9 = offset_21(e1 + e2 + e3 + e4);
+            var e10 = offset_21(e3 + e9);
+            var e11 = offset_21(e9 + e4);
+            var e12 = offset_21(e11 + e10);
+            var e13 = offset_21(e11 + e12);
+            var e14 = offset_21(e12 + e10);
+            var e15 = offset_21(e11 + e4);
+
+            $('#matrix').line(e1y, e1x, e2y, e2x, {color:"black", zindex: 1});
+            $('#matrix').line(e2y, e2x, e3y, e3x, {color:"black", zindex: 1});
+            $('#matrix').line(e3y, e3x, e4y, e4x, {color:"black", zindex: 1});
+            $('#matrix').line(e4y, e4x, e1y, e1x, {color:"black", zindex: 1});
+            $('#matrix').line(e5y, e5x, e6y, e6x, {color:"black", zindex: 1});
+            $('#matrix').line(e6y, e6x, e7y, e7x, {color:"black", zindex: 1});
+            $('#matrix').line(e7y, e7x, e8y, e8x, {color:"black", zindex: 1});
+            $('#matrix').line(e8y, e8x, e5y, e5x, {color:"black", zindex: 1});
+            $('#matrix').line(e1y, e1x, e3y, e3x, {color:"black", zindex: 1});
+            $('#matrix').line(e2y, e2x, e4y, e4x, {color:"black", zindex: 1});
+            $('#matrix').line(e5y, e5x, e7y, e7x, {color:"black", zindex: 1});
+            $('#matrix').line(e6y, e6x, e8y, e8x, {color:"black", zindex: 1});
+            $('#matrix').line(e10y, e10x, e11y, e11x, {color:"black", zindex: 1});
+
+            $("#e1").css({top: e1y - e_radius, left: e1x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e2").css({top: e2y - e_radius, left: e2x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e3").css({top: e3y - e_radius, left: e3x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e4").css({top: e4y - e_radius, left: e4x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e5").css({top: e5y - e_radius, left: e5x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e6").css({top: e6y - e_radius, left: e6x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e7").css({top: e7y - e_radius, left: e7x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e8").css({top: e8y - e_radius, left: e8x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e9").css({top: e9y - e_radius, left: e9x - e_radius, width: e_size, height: e_size, "line-height": e_size+'px', "z-index": 2});
+            $("#e10").css({top: e10y - m_radius, left: e10x - m_radius, width: m_size, height: m_size, "line-height": m_size+'px', "z-index": 2});
+            $("#e11").css({top: e11y - m_radius, left: e11x - m_radius, width: m_size, height: m_size, "line-height": m_size+'px', "z-index": 2});
+            $("#e12").css({top: e12y - m_radius, left: e12x - m_radius, width: m_size, height: m_size, "line-height": m_size+'px', "z-index": 2});
+            $("#e13").css({top: e13y - s_radius, left: e13x - s_radius, width: s_size, height: s_size, "line-height": s_size+'px', "z-index": 2});
+            $("#e14").css({top: e14y - s_radius, left: e14x - s_radius, width: s_size, height: s_size, "line-height": s_size+'px', "z-index": 2});
+            $("#e15").css({top: e15y - s_radius, left: e15x - s_radius, width: s_size, height: s_size, "line-height": s_size+'px', "z-index": 2});
+
+            $("#e1").text(e1.toString());
+            $("#e2").text(e2.toString());
+            $("#e3").text(e3.toString());
+            $("#e4").text(e4.toString());
+            $("#e5").text(e5.toString());
+            $("#e6").text(e6.toString());
+            $("#e7").text(e7.toString());
+            $("#e8").text(e8.toString());
+            $("#e9").text(e9.toString());
+            $("#e10").text(e10.toString());
+            $("#e11").text(e11.toString());
+            $("#e12").text(e12.toString());
+            $("#e13").text(e13.toString());
+            $("#e14").text(e14.toString());
+            $("#e15").text(e15.toString());
+
+            $("#matrix").show();
+            $("#date_of_birth").hide();
+
+        });
+
+    });
+
+    </script>
+  </head>
+  <body>
+
+    <div id="date_of_birth">
+        Date of birth:
+        <div id="datepicker"> </div>
+        <input type="button" id="button_ok" value="ok" />
+    </div>
+
+    <div id="matrix">
+      <div id="e1" class="circle">e1</div>
+      <div id="e2" class="circle">e2</div>
+      <div id="e3" class="circle">e3</div>
+      <div id="e4" class="circle">e4</div>
+      <div id="e5" class="circle">e5</div>
+      <div id="e6" class="circle">e6</div>
+      <div id="e7" class="circle">e7</div>
+      <div id="e8" class="circle">e8</div>
+      <div id="e9" class="circle">e9</div>
+      <div id="e10" class="circle">e10</div>
+      <div id="e11" class="circle">e11</div>
+      <div id="e12" class="circle">e12</div>
+      <div id="e13" class="circle">e13</div>
+      <div id="e14" class="circle">e14</div>
+      <div id="e15" class="circle">e15</div>
+    </div>
+
+  </body>
+</html>
